@@ -24,6 +24,9 @@ namespace SubeDocumentos.Model.XmlModel
         public List<Concepto> Conceptos { get; set; }
         public List<Impuesto> Impuestos { get; set; }
         public Complemento Complemento { get; set; }
+        public string Version { get; set; }
+        public string FormaPago { get; set; }
+        public string CondicionesDePago { get; set; }
     }
     public class Emisor
     {
@@ -38,6 +41,7 @@ namespace SubeDocumentos.Model.XmlModel
         public string Nombre { get; set; }
         public string DomicilioFiscalReceptor { get; set; }
         public string RegimenFiscalReceptor { get; set; }
+        public string UsoCFDI { get; set; }
     }
     public class Concepto
     {
