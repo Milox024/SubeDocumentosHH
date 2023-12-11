@@ -54,7 +54,6 @@ namespace SubeDocumentos.Controllers
                                 filesToRead.Add(RutaFullCompleta);
                             }
                         }
-
                     }
                 }
                 List<Factura> XmlList = XmlBS.InstanceBS.ReadXml(filesToRead);
