@@ -47,15 +47,23 @@ namespace SubeDocumentos.Controllers
 
                 if (request.ValidaArchivos || request.EsRembolso) 
                 {
+                    DatosValidos dv = new DatosValidos 
+                    {
+                        Rfc = Configuration.GetSection("RFCValido").Value,
+                        RegimenFiscalReceptor = Configuration.GetSection("RegimenValido").Value,
+                        UsoCFDIList = Configuration.GetSection("CfdiValidos").Value.Split(",").ToList(),
+                        MetodoPago = Configuration.GetSection("MetodoPagoValido").Value,
+                        FormaPago = Configuration.GetSection("FormaPagoValido").Value
+                    };
                     if (request.ValidaArchivos)
                     {
-                        string valresult = XmlBS.InstanceBS.ValidaFactura(fval);
+                        string valresult = XmlBS.InstanceBS.ValidaFactura(fval, dv);
                         msgValidacion = !valresult.Equals("Ok") ? valresult : "El CFDi cumple con las validaciones internas del portal.";
                         ArchivosValidos = valresult.Equals("Ok");
                     }
                     if (request.EsRembolso && ArchivosValidos)
                     {
-                        string valresult = XmlBS.InstanceBS.ValidaRembolso(fval);
+                        string valresult = XmlBS.InstanceBS.ValidaRembolso(fval, dv);
                         msgValidacion = !valresult.Equals("Ok") ? valresult : "El CFDi cumple con las validaciones internas del portal.";
                         ArchivosValidos = valresult.Equals("Ok");
                     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.Extensions.Configuration;
+using SubeDocumentos.Model;
 using SubeDocumentos.Model.XmlModel;
 using System;
 using System.IO;
@@ -40,25 +41,25 @@ namespace SubeDocumentos.BS
             return "";
         }
 
-        public string ValidaFactura(Factura factura)
+        public string ValidaFactura(Factura factura, DatosValidos dv)
         {
-            if (!factura.Receptor.Rfc.Equals("INC710101RH7"))
+            if (!factura.Receptor.Rfc.Equals(dv.Rfc))
             {
                 return "El RFC del Emisor no es Valido";
             }
-            if (!factura.Receptor.RegimenFiscalReceptor.Equals("603"))
+            if (!factura.Receptor.RegimenFiscalReceptor.Equals(dv.RegimenFiscalReceptor))
             {
                 return "El Regimen Fiscal del Emisor no es Valido";
             }
-            if (!(new string[] { "G03","I01","I08","I02" }).Contains(factura.Receptor.UsoCFDI))
+            if (!dv.UsoCFDIList.Contains(factura.Receptor.UsoCFDI))
             {
                 return "El Uso de CFDI no es Valido.";
             }
-            if (!factura.MetodoPago.Equals("PPD"))
+            if (!factura.MetodoPago.Equals(dv.MetodoPago))
             {
                 return "El MetodoPago no es Valido";
             }
-            if (!factura.FormaPago.Equals("99"))
+            if (!factura.FormaPago.Equals(dv.FormaPago))
             {
                 return "El FormaPago no es Valido";
             }
@@ -66,17 +67,17 @@ namespace SubeDocumentos.BS
             return "Ok";
         }
 
-        public string ValidaRembolso(Factura factura)
+        public string ValidaRembolso(Factura factura, DatosValidos dv)
         {
-            if (!factura.Receptor.Rfc.Equals("INC710101RH7"))
+            if (!factura.Receptor.Rfc.Equals(dv.Rfc))
             {
                 return "El RFC del Emisor no es Valido";
             }
-            if (!factura.Receptor.RegimenFiscalReceptor.Equals("603"))
+            if (!factura.Receptor.RegimenFiscalReceptor.Equals(dv.RegimenFiscalReceptor))
             {
                 return "El Regimen Fiscal del Emisor no es Valido";
             }
-            if (!(new string[] { "G03", "I01", "I08", "I02" }).Contains(factura.Receptor.UsoCFDI))
+            if (!dv.UsoCFDIList.Contains(factura.Receptor.UsoCFDI))
             {
                 return "El Uso de CFDI no es Valido.";
             }
