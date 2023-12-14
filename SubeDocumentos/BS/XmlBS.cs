@@ -40,6 +40,15 @@ namespace SubeDocumentos.BS
             return "";
         }
 
+        public string ValidarVersion(Factura factura)
+        {
+            if (factura.Version.Equals("3.3") && Convert.ToDateTime(factura.Fecha) >= (new DateTime(2023, 4, 1)))
+            {
+                return "A partir del 01 de abril del 2023, solo se permite version 4.0";
+            }
+            return "Ok";
+        }
+
         public string ValidaFactura(Factura factura, DatosValidos dv)
         {
             if (!factura.Receptor.Rfc.Equals(dv.Rfc))
@@ -49,6 +58,10 @@ namespace SubeDocumentos.BS
             if (!factura.Receptor.RegimenFiscalReceptor.Equals(dv.RegimenFiscalReceptor))
             {
                 return "El Regimen Fiscal del Emisor no es Valido";
+            }
+            if (!factura.Version.Equals("4.0"))
+            {
+                return "La Version del documento es incorrecta";
             }
             if (!dv.UsoCFDIList.Contains(factura.Receptor.UsoCFDI))
             {
