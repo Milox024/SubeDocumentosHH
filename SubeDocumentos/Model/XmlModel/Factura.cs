@@ -58,7 +58,7 @@ namespace SubeDocumentos.Model.XmlModel
     }
     public class Impuesto
     {
-        public string TotalImpuestosTrasladados { get; set; }
+        public string? TotalImpuestosTrasladados { get; set; }
         public List<Traslado> Traslados { get; set; }
     }
     public class Traslado

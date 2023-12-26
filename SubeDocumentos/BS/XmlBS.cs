@@ -13,7 +13,6 @@ namespace SubeDocumentos.BS
 {
     public class XmlBS
     {
-
         private static XmlBS instanceBS;
         public static XmlBS InstanceBS
         {
