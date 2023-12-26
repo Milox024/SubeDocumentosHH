@@ -45,6 +45,19 @@ namespace SubeDocumentos.Controllers
                 bool ArchivosValidos = true;
                 string msgValidacion = "";
 
+                string msgVersion = XmlBS.InstanceBS.ValidarVersion(fval);
+                if (!msgVersion.Equals("Ok"))
+                {
+                    return BadRequest(new
+                    {
+                        Status = 400,
+                        Message = "",
+                        RutaArchivos = new List<string>(),
+                        XmlObject = new object { },
+                        MsgValidacion = msgVersion
+                    });
+                }
+
                 if (request.ValidaArchivos || request.EsRembolso) 
                 {
                     DatosValidos dv = new DatosValidos 
