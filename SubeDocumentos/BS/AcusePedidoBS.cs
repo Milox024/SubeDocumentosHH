@@ -1,54 +1,46 @@
-﻿
-using DocumentFormat.OpenXml.Drawing.Diagrams;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Office.Interop.Word;
-using Microsoft.VisualBasic;
 using SubeDocumentos.Model;
-using SubeDocumentos.Model.XmlModel;
-using System;
-using System.Globalization;
-using System.Reflection;
 
 namespace SubeDocumentos.BS
 {
-    public class AcuseOrdenTrabajoBS
+    public class AcusePedidoBS
     {
-        private static AcuseOrdenTrabajoBS instanceBS;
-        public static AcuseOrdenTrabajoBS InstanceBS
+        private static AcusePedidoBS instanceBS;
+        public static AcusePedidoBS InstanceBS
         {
             get
             {
                 if (instanceBS == null)
                 {
-                    return new AcuseOrdenTrabajoBS();
+                    return new AcusePedidoBS();
                 }
                 return instanceBS;
             }
         }
 
-        public string GenerarAcuse(string rutaPlantilla, string rutaSalidaAcuse, AcuseOrdenTrabajoModel model)
+        public string GenerarAcuse(string rutaPlantilla, string rutaSalidaAcuse, AcusePedidoModel model)
         {
-            string rutaArchivoSalida = rutaSalidaAcuse + "/" + model.Emisor + "_" + "ACUSE_ORDEN_TRABAJO_" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".docx";
-            using (var plantilla = File.Open(rutaPlantilla, FileMode.Open, FileAccess.ReadWrite)) 
+            string rutaArchivoSalida = rutaSalidaAcuse + "/" + model.Emisor + "_" + "ACUSE_PEDIDO_" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".docx";
+            using (var plantilla = File.Open(rutaPlantilla, FileMode.Open, FileAccess.ReadWrite))
             {
-                using (var stream = new MemoryStream()) 
+                using (var stream = new MemoryStream())
                 {
                     plantilla.CopyTo(stream);
                     stream.Seek(0, SeekOrigin.Begin);
 
-                    if (!Directory.Exists(rutaSalidaAcuse)) 
+                    if (!Directory.Exists(rutaSalidaAcuse))
                     {
                         Directory.CreateDirectory(rutaSalidaAcuse);
                     }
-                    using (var fileStream = File.Create(rutaArchivoSalida)) 
+                    using (var fileStream = File.Create(rutaArchivoSalida))
                     {
                         stream.CopyTo(fileStream);
                     }
                 }
             }
-            using (WordprocessingDocument wDocument = WordprocessingDocument.Open(rutaArchivoSalida, true)) 
+            using (WordprocessingDocument wDocument = WordprocessingDocument.Open(rutaArchivoSalida, true))
             {
                 var body = wDocument.MainDocumentPart.Document.Body;
                 var paras = body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
@@ -66,7 +58,7 @@ namespace SubeDocumentos.BS
                 }
                 wDocument.MainDocumentPart.Document.Save();
             }
-            if (File.Exists(rutaArchivoSalida)) 
+            if (File.Exists(rutaArchivoSalida))
             {
                 var wordApp = new Microsoft.Office.Interop.Word.Application();
                 var wordAppDocument = wordApp.Documents.Open(rutaArchivoSalida.Replace("/", "\\"));
@@ -80,6 +72,5 @@ namespace SubeDocumentos.BS
             }
             return rutaArchivoSalida.Replace(".docx", ".pdf");
         }
-
     }
 }
