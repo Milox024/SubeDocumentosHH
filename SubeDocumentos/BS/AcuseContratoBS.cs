@@ -69,6 +69,9 @@ namespace SubeDocumentos.BS
                 wordApp.Quit();
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
+
+                if (File.Exists(rutaArchivoSalida))
+                    File.Delete(rutaArchivoSalida);
             }
             return rutaArchivoSalida.Replace(".docx", ".pdf");
         }
