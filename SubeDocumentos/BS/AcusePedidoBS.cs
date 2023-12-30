@@ -1,7 +1,9 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.Office.Interop.Word;
+using Spire.Doc;
+using Spire.Doc.Documents;
 using SubeDocumentos.Model;
+using DocumentSpire = Spire.Doc.Document;
 
 namespace SubeDocumentos.BS
 {
@@ -60,15 +62,10 @@ namespace SubeDocumentos.BS
             }
             if (File.Exists(rutaArchivoSalida))
             {
-                var wordApp = new Microsoft.Office.Interop.Word.Application();
-                var wordAppDocument = wordApp.Documents.Open(rutaArchivoSalida.Replace("/", "\\"));
-
-                wordAppDocument.ExportAsFixedFormat(rutaArchivoSalida.Replace(".docx", ".pdf"), WdExportFormat.wdExportFormatPDF);
-
-                wordAppDocument.Close();
-                wordApp.Quit();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                DocumentSpire document = new DocumentSpire();
+                document.LoadFromFile(rutaArchivoSalida);
+                //Convert Word to PDF
+                document.SaveToFile(rutaArchivoSalida.Replace(".docx",".pdf"), FileFormat.PDF);
 
                 if (File.Exists(rutaArchivoSalida))
                     File.Delete(rutaArchivoSalida);

@@ -3,9 +3,10 @@ using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.Office.Interop.Word;
 using Microsoft.VisualBasic;
+using Spire.Doc.Documents;
 using SubeDocumentos.Model;
+using DocumentSpire = Spire.Doc.Document;
 using SubeDocumentos.Model.XmlModel;
 using System;
 using System.Globalization;
@@ -66,19 +67,14 @@ namespace SubeDocumentos.BS
                 }
                 wDocument.MainDocumentPart.Document.Save();
             }
-            if (File.Exists(rutaArchivoSalida)) 
+            if (File.Exists(rutaArchivoSalida))
             {
-                var wordApp = new Microsoft.Office.Interop.Word.Application();
-                var wordAppDocument = wordApp.Documents.Open(rutaArchivoSalida.Replace("/", "\\"));
+                DocumentSpire document = new DocumentSpire();
+                document.LoadFromFile(rutaArchivoSalida);
+                //Convert Word to PDF
+                document.SaveToFile(rutaArchivoSalida.Replace(".docx", ".pdf"), FileFormat.PDF);
 
-                wordAppDocument.ExportAsFixedFormat(rutaArchivoSalida.Replace(".docx", ".pdf"), WdExportFormat.wdExportFormatPDF);
-
-                wordAppDocument.Close();
-                wordApp.Quit();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-
-                if(File.Exists(rutaArchivoSalida))
+                if (File.Exists(rutaArchivoSalida))
                     File.Delete(rutaArchivoSalida);
             }
             return rutaArchivoSalida.Replace(".docx", ".pdf");
